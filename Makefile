@@ -6,7 +6,7 @@
 #    By: ymafaman <ymafaman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/19 13:34:29 by ymafaman          #+#    #+#              #
-#    Updated: 2024/05/19 21:07:37 by ymafaman         ###   ########.fr        #
+#    Updated: 2024/05/21 23:01:43 by ymafaman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ BOBJ= $(BSRC:.c=.o)
 BNAME= cube3d_bonus
 
 CC= cc
-CFLAGS= -Wall -Wextra -Werror -g -fsanitize=address #remove
+CFLAGS= -Wall -Wextra -Werror #-g -fsanitize=address #remove
 COMPILING	= -I MLX/MLX42.h
 
 BMLX_LIB = Bonus/MLX/libmlx42.a

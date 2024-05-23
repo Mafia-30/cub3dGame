@@ -30,8 +30,8 @@ static void	move_side(t_game *game, double side_step)
     pseudo_y = game->map.player.y + sin(game->map.player.rotation_angle + M_PI_2) * side_step;
     if (!collision(pseudo_x, pseudo_y, &game->map))
     {
-        game->map.player.x += cos(game->map.player.rotation_angle + M_PI_2) * side_step;
-        game->map.player.y += sin(game->map.player.rotation_angle + M_PI_2) * side_step;
+        game->map.player.x = pseudo_x;
+        game->map.player.y = pseudo_y;
     }
 }
 
@@ -47,8 +47,8 @@ static void	move_front_back(t_game *game, double direct_step)
 
 	if (!collision(pseudo_x, pseudo_y, &game->map))
 	{
-		game->map.player.x += cos(game->map.player.rotation_angle) * direct_step;
-		game->map.player.y += sin(game->map.player.rotation_angle) * direct_step;
+		game->map.player.x = pseudo_x;
+		game->map.player.y = pseudo_y;
 	}
 }
 void update_pos_dir(t_game *game)
