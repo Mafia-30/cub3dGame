@@ -50,7 +50,7 @@ char	*gnl_strjoin(char *s1, char const *s2)
 	{
 		ft_strlcpy(join, s1, s1s + 1);
 		ft_strlcpy(join + s1s, s2, s2s + 1);
-        join[s1s + s2s] = '\0';
+		join[s1s + s2s] = '\0';
 		return (join);
 	}
 	return (NULL);

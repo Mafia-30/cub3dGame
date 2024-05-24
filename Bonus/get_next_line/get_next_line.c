@@ -40,7 +40,7 @@ void	ft_fill_cache(int fd, char **cache, int *bytes_read)
 			*cache = NULL;
 			return ;
 		}
-		*bytes_read = (int) read(fd, buffer, BUFFER_SIZE);
+		*bytes_read = (int)read(fd, buffer, BUFFER_SIZE);
 		if (*bytes_read <= 0)
 		{
 			free(buffer);
