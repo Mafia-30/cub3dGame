@@ -53,10 +53,7 @@ static t_point get_horz_intersect(t_game *game, double ray_angle, bool *foundHor
 		if (!is_ray_down)
 			s_y -= 0.1;
         if (hasWallAt(game, intersect.x, s_y))
-        {
-            *foundHorzHit = 1;
-            break;
-        }
+            return (*foundHorzHit = true, intersect);
         else
         {
             intersect.x += xstep;
@@ -71,7 +68,7 @@ double	get_horz_distance(t_game *game, double ray_angle, bool *foundHorzHit, t_p
 	double	distance;
 
 	*horz_intersect = get_horz_intersect(game, ray_angle, foundHorzHit);
-	if (foundHorzHit)
+	if (*foundHorzHit)
         distance = distanceBetweenPoints(game->map.player.x * game->tile_size, game->map.player.y * game->tile_size, horz_intersect->x * game->tile_size, horz_intersect->y * game->tile_size);
 	if (*foundHorzHit)
 		return (distance);

@@ -4,13 +4,15 @@ void missing_elem(t_game *game)
 {
     if (!game->no_texture || !game->so_texture || !game->we_texture || !game->ea_texture)
         error_exit("Error\nMissing texture");
-    if (game->floor_color == -1 || game->ceiling_color == -1)
+    if (!game->floor_color_set || !game->ciel_color_set)
+    {
         error_exit("Error\nMissing color");
+    }
 }
 
 bool is_valid_ele(char c)
 {
-    return (c == '0' || c == '1' || c == 'D' || c == 'N' || c == 'S' || c == 'W' || c == 'E' || ft_isspace(c));
+    return (c == '0' || c == '1' || c == 'D' || c == 'N' || c == 'S' || c == 'W' || c == 'E' || c == ' ');
 }
 
 int is_map_line(t_game *game, char *line)
@@ -28,7 +30,6 @@ int is_map_line(t_game *game, char *line)
         else
             error_exit("Error\nInvalid map content");
     }
-
     if (game->map.map_x < (int)ft_strlen(line))
     {
         game->map.map_x = ft_strlen(line);

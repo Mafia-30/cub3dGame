@@ -11,7 +11,8 @@ void append_line(t_game *game, char *line)
     i = 0;
     while (i < game->map.map_y)
     {
-        new_map[i] = game->map.map[i];
+        new_map[i] = ft_strdup(game->map.map[i]);
+        free (game->map.map[i]);
         i++;
     }
     new_map[i] = line;

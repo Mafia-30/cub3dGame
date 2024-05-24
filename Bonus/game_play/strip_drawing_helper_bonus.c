@@ -11,25 +11,22 @@ int get_texture_y(int y, double height, t_game *game)
 int get_texture_x(t_game *game)
 {
     int index_x;
+    char inter_type;
+    t_point inter_point;
+
+    inter_type = game->intersection_type;
+    inter_point = game->inter;
     if (game->allow_door_drawing)
     {
-        if (game->intersection_type_door == 't' || game->intersection_type_door == 'b')
-            index_x = (int)(game->inter_door.x * game->tile_size) % game->tile_size; // the first part wich is the multiplication because the inter_door x is not in pixels and the other one tho get the exact offsett of the the x because it might be bigger than tile size it self
-        else
-            index_x = (int)(game->inter_door.y * game->tile_size) % game->tile_size; // sinse the image is ts * ts then we can get the idex x by the y offsett and also all the rays that are gonna hit that wall like that are gonna have the same x so we better use the y since it is the one whose gonna be changing
-
-        if (game->intersection_type_door == 'b' || game->intersection_type_door == 'l')
-            index_x = game->tile_size - index_x; // because the wall in this cases is gonna start being drawn from left to right and in the other case it s gonna start be drawing from right to left
-        if (index_x == game->tile_size)
-            index_x--;
-        return (index_x);
+        inter_type = game->intersection_type_door;
+        inter_point = game->inter_door;
     }
-    if (game->intersection_type == 't' || game->intersection_type == 'b')
-        index_x = (int)(game->inter.x * game->tile_size) % game->tile_size;
+    if (inter_type == 't' || inter_type == 'b')
+        index_x = (int)(inter_point.x * game->tile_size) % game->tile_size;
     else
-        index_x = (int)(game->inter.y * game->tile_size) % game->tile_size;
+        index_x = (int)(inter_point.y * game->tile_size) % game->tile_size;
 
-    if (game->intersection_type == 'b' || game->intersection_type == 'l')
+    if (inter_type == 'b' || inter_type == 'l')
         index_x = game->tile_size - index_x;
     if (index_x == game->tile_size)
         index_x--;

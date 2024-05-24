@@ -43,13 +43,20 @@ static void	mouse_rotation(t_game *game)
 
 static void shoot(t_game *game)
 {
-    if (game->map.player.gun_image_id == 4)
+    static int  delay;
+
+    if (delay == 2)
     {
-        game->map.player.gun_image_id = 0;
-        game->map.player.shooting = 0;
+        if (game->map.player.gun_image_id == 4)
+        {
+            game->map.player.gun_image_id = 0;
+            game->map.player.shooting = 0;
+        }
+        else
+            game->map.player.gun_image_id++;
+        delay = 0;
     }
-    else
-        game->map.player.gun_image_id++;
+    delay++;
 }
 
 void my_loop_hook(void *param)

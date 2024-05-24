@@ -31,7 +31,7 @@ void draw_intersect_door(t_game *game, double ray_angle, double *ray_distance)
 
 	foundHorzHit = false;
 	foundVertHit = false;
-	*ray_distance = 0;
+	*ray_distance = LONG_MAX;
 	distances[0] = get_horz_door_distance(game, ray_angle, &foundHorzHit, &horz_intersect);
 	distances[1] = get_vert_door_distance(game, ray_angle, &foundVertHit, &vert_intersect);
     if (foundHorzHit && foundVertHit)
@@ -45,4 +45,6 @@ void draw_intersect_door(t_game *game, double ray_angle, double *ray_distance)
     	store_horz_inter_info (game, ray_distance, horz_intersect, distances[0]);
     else if (foundVertHit)
     	store_vert_inter_info (game, ray_distance, vert_intersect, distances[1]);
+	if (foundHorzHit || foundVertHit)
+		*ray_distance = *ray_distance * cos(ray_angle - game->map.player.rotation_angle);
 }

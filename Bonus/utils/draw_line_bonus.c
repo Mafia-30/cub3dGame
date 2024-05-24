@@ -1,7 +1,7 @@
 
 #include "../cub3d_bonus.h"
 
-void draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2)
+void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2)
 {
 	t_point delta;
 	t_point increment;

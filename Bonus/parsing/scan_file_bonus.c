@@ -15,6 +15,7 @@ void read_file(t_game *game, char *file)
 {
     int fd;
     char *line;
+    (void)game;
 
     fd = open(file, O_RDONLY);
     if (fd < 0)
@@ -26,7 +27,6 @@ void read_file(t_game *game, char *file)
         free(line);
         line = get_next_line(fd);
     }
-    free(line);
     close(fd);
 }
 
@@ -34,6 +34,7 @@ void scan_file(t_game *game, char *file)
 {
     check_ext(file);
     read_file(game, file);
+    adjust_matrix(&game->map);
     is_surrounded(&game->map);
     game->map.player.x = game->map.player.x + 0.5;
     game->map.player.y = game->map.player.y + 0.5;

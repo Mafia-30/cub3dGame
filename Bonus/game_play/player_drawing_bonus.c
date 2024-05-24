@@ -1,4 +1,3 @@
-
 #include "../cub3d_bonus.h"
 
 void draw_player(t_game *game)
@@ -15,7 +14,9 @@ void draw_player(t_game *game)
     while (i < (game->win_height * 0.6))
     {
         j = 0;
-        x = game->win_width / 2;
+        x = game->win_width / 3;
+        if (game->map.player.gun_id == 0)
+            x = game->win_width / 2;
         while (j < (game->win_height * 0.6))
         {
             if (pixels[(int)(i * (game->win_height * 0.6)) + j] << 24)

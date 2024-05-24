@@ -1,19 +1,5 @@
-
-
 #include "../cub3d_bonus.h"
 
-static int get_hitten_door_index(t_game *game, int x, int y)
-{
-    int i = 0;
-
-    while (i < game->map.doors_num)
-    {
-        if ((int) game->map.doors[i].pos.x == x && (int) game->map.doors[i].pos.y == y)
-            return (i);
-        i++;
-    }
-    return (-1);
-}
 
 int hasDoorAt(t_game *game, double x, double y)
 {
@@ -21,9 +7,8 @@ int hasDoorAt(t_game *game, double x, double y)
         return true;
     int mapGridIndexX = floor(x);
     int mapGridIndexY = floor(y);
-    if (game->map.map[mapGridIndexY][mapGridIndexX] == 'D' || game->map.map[mapGridIndexY][mapGridIndexX] == 'd')
+    if (game->map.map[mapGridIndexY][mapGridIndexX] == 'D')
     {
-        game->hitten_door_index = get_hitten_door_index(game, mapGridIndexX, mapGridIndexY); // maby the hitten door index is changed between the verical intersection and the horizontal one
         return (1);
     }
     return (0);
@@ -38,3 +23,60 @@ int hasWallAt(t_game *game, double x, double y)
     return (game->map.map[mapGridIndexY][mapGridIndexX] == '1');
 }
 
+void open_closest_door(t_game *game, int px, int py)
+{
+    t_point ij;
+    t_point door;
+    double min_distance;
+    double distance;
+
+    ij.x = -1;
+    min_distance = INT_MAX;
+    distance = 0;
+    while (++ij.x < game->map.map_y)
+    {
+        ij.y = -1;
+        while (++ij.y < game->map.map_x)
+            if (game->map.map[(int)ij.x][(int)ij.y] == 'D')
+            {
+                distance = distanceBetweenPoints(px, py, ij.y, ij.x);
+                if (distance < min_distance)
+                {
+                    min_distance = distance;
+                    door.x = ij.y;
+                    door.y = ij.x;
+                }
+            }
+    }
+    if (min_distance < 3)
+        game->map.map[(int)door.y][(int)door.x] = 'd';
+}
+
+void close_closest_door(t_game *game, int px, int py)
+{
+    t_point ij;
+    t_point door;
+    double min_distance;
+    double distance;
+
+    ij.x = -1;
+    min_distance = INT_MAX;
+    distance = 0;
+    while (++ij.x < game->map.map_y)
+    {
+        ij.y = -1;
+        while (++ij.y < game->map.map_x)
+            if (game->map.map[(int)ij.x][(int)ij.y] == 'd')
+            {
+                distance = distanceBetweenPoints(px, py, ij.y, ij.x);
+                if (distance < min_distance)
+                {
+                    min_distance = distance;
+                    door.x = ij.y;
+                    door.y = ij.x;
+                }
+            }
+    }
+    if (min_distance < 3)
+        game->map.map[(int)door.y][(int)door.x] = 'D';
+}

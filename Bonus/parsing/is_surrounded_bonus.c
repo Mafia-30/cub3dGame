@@ -2,7 +2,13 @@
 
 inline static int is_open_space(char **map, int x, int y)
 {
-    if (map[y][x + 1] == '\0' || map[y + 1][x] == '\0' || map[y - 1][x] == '\0' || ft_isspace(map[y][x + 1]) || ft_isspace(map[y][x - 1]) || ft_isspace(map[y + 1][x]) || ft_isspace(map[y - 1][x]))
+    if (map[y][x + 1] == '\0' 
+    || map[y + 1][x] == '\0' 
+    || map[y - 1][x] == '\0' 
+    || (map[y][x + 1]) == ' ' 
+    || (map[y][x - 1]) == ' ' 
+    || (map[y + 1][x]) == ' ' 
+    || (map[y - 1][x]) == ' ')
         return (1);
     return (0);
 }

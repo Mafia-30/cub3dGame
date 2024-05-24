@@ -64,3 +64,5 @@ void update_pos_dir(t_game *game)
     if (direct_step)
 		move_front_back (game, direct_step);
 }
+
+

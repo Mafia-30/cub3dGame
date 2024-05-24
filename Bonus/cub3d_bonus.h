@@ -36,36 +36,27 @@ typedef struct s_gun
 }    t_gun;
 
 
-typedef struct s_door
-{
-	t_point	pos;
-	int		first_pixel_x;
-}	t_door;
-
 typedef struct s_player
 {
-	double	x;
-	double	y;
-	int		turn_dir; // -1 for left, 1 for right
-	int		turn_dir_mouse; // -1 for left, 1 for right
-	int		walk_dir; // -1 for back, 1 for front
-	int		walk_sid; // -1 for left, 1 for right
-	double	rotation_angle; // in radian
-	double	move_speed;
-	double		FOV;
-	int		rays_num;
-	double	rotation_speed;
-	mlx_image_t* player_imgs[5];
-	uint32_t* player_pixels[5];
-	mlx_image_t *rays;
-	int shooting;
-	int gun_image_id;
-    int gun_id;
-	t_gun    guns[4];
+	bool shooting;
 	char **knife;
 	char **gun;
 	char **aka;
 	char **machine;
+	int		turn_dir;
+	int		turn_dir_mouse;
+	int		walk_dir;
+	int		walk_sid;
+	int gun_image_id;
+    int gun_id;
+	int		rays_num;
+	double	x;
+	double	y;
+	double	rotation_angle;
+	double	move_speed;
+	double		FOV;
+	double	rotation_speed;
+	t_gun    guns[4];
 }	t_player;
 
 typedef struct s_map
@@ -74,54 +65,40 @@ typedef struct s_map
 	int			map_x;
 	int			map_y;
 	int			empty_line_in_map;
+	int 		mini_map_size;
 	t_player 	player;
 	mlx_image_t *win_image;
-	int 		mini_map_size;
-	t_door		*doors;
-	int			doors_num;
 }	t_map;
 
-typedef struct s_drawable_doors
-{
-	double	ray_distance;
-	double door_height;
-	char	inter_type;
-	int		hitten_door_index;
-	int		hitten_door_index_2;
-	t_point	index;
-	t_point inter_door;
-	struct s_drawable_doors *next;
-	struct s_drawable_doors *prev;
-}	t_drawable_doors;
 
 
 typedef struct s_game
 {
-	char intersection_type;
-	t_point inter;
-	uint32_t *no_pixels;
-	uint32_t *so_pixels;
-	uint32_t *we_pixels;
-	uint32_t *ea_pixels;
+	bool 	allow_door_drawing;
+	char 	intersection_type;
+	char 	intersection_type_door;
 	char	*no_texture; 
 	char	*so_texture;
 	char	*we_texture;
 	char	*ea_texture;
-	int		floor_color;
-	int		ceiling_color;
-	t_map	map;
+	char    *door_texture;
 	int     tile_size;
 	int		win_width;
 	int		win_height;
-	mlx_t	*mlx;
-	t_point inter_door;
+	int		floor_color;
+	int		ceiling_color;
+	bool	floor_color_set;
+	bool	ciel_color_set;
+	double 	dpp;
+	uint32_t *no_pixels;
+	uint32_t *so_pixels;
+	uint32_t *we_pixels;
+	uint32_t *ea_pixels;
 	uint32_t *door_pixels;
-	bool allow_door_drawing;
-	char    *door_texture;
-	char intersection_type_door;
-	double dpp;
-	int		hitten_door_index;
-	int		found_doors;
+	mlx_t	*mlx;
+	t_point inter;
+	t_point inter_door;
+	t_map	map;
 }	t_game;
 
 
@@ -132,7 +109,8 @@ void		scan_file(t_game *game, char *file);
 //parse_line.c
 void		parse_line(t_game *game, char *line);
 void        parse_texture(char *line, char **texture);
-void        parse_color(char *line, int *color);
+void        parse_color(t_game *game, char *line, int *color, char type);
+
 
 
 
@@ -190,11 +168,10 @@ void is_surrounded(t_map *map);
 // utils/adjust_matrix.c
 void adjust_matrix(t_map *map);
 
-void    store_doors_info(t_game *game);
 // calculations
 double distanceBetweenPoints(double x1, double y1, double x2, double y2);
 // draw a line
-void draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2);
+void draw_line(mlx_image_t *img, double x1, double y1, double x2, double y2);
 
 //texutes loading 
 void init_arm(t_game *game, char *gun[5]);
@@ -224,13 +201,15 @@ double	get_vert_door_distance(t_game *game, double ray_angle, bool *foundHorzHit
 
 //drawing
 void display_all(t_game *game);
-t_drawable_doors *get_drawable_doors(t_game *game, double ray_angle);
 void draw_strip(t_point startPoint, double height, t_game *game);
 int get_texture_x(t_game *game);
 int get_texture_y(int y, double height, t_game *game);
 void draw_player(t_game *game);
 void draw_mini_map(t_game *game);
 
+//open close
+void open_closest_door(t_game *game, int px, int py);
+void close_closest_door(t_game *game, int px, int py);
 
 #endif
 

@@ -27,8 +27,8 @@ static void set_map_info(t_game *game)
     game->we_texture = NULL;
     game->ea_texture = NULL;
     game->door_texture = "Bonus/assets/walls/door.png";
-    game->floor_color = -1;
-    game->ceiling_color = -1;
+    game->ciel_color_set = false;
+    game->floor_color_set = false;
     game->map.map_x = 0;
     game->map.map_y = 0;
     game->win_width = 2000;
@@ -38,11 +38,9 @@ static void set_map_info(t_game *game)
     game->map.empty_line_in_map = 0;
     game->map.win_image = NULL;
     game->allow_door_drawing = false;
-    game->map.mini_map_size = game->win_width/10;
-    game->hitten_door_index = -1;
-    game->map.doors = NULL;
-	game->dpp = (game->win_height) / tan(game->map.player.FOV / 2);
-    game->map.player.rays_num = game->win_width;
+    game->map.mini_map_size = game->win_width / 10;
+	game->dpp = (game->win_width / 2) / tan(game->map.player.FOV / 2);
+    game->map.player.rays_num = game->win_width ;
 
 }
 

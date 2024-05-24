@@ -44,9 +44,7 @@ static t_point get_vert_intersect(t_game *game, double ray_angle, bool *foundVer
     double xstep;
 	double ystep;
     bool is_ray_left;
-	int	i;
 
-	i = 0;
     get_first_intersection (game, &intersect, &is_ray_left, ray_angle);
     get_x_step (&xstep, is_ray_left);
     get_y_step (&ystep, ray_angle);
@@ -58,10 +56,8 @@ static t_point get_vert_intersect(t_game *game, double ray_angle, bool *foundVer
 			s_x -= 0.1;
 		if (hasWallAt(game, s_x, intersect.y))
 			break ;
-        if (hasDoorAt(game, s_x, intersect.y) && i == game->found_doors)
+        if (hasDoorAt(game, s_x, intersect.y))
             return (*foundVertHit = 1, intersect);
-		else if (hasDoorAt(game, s_x, intersect.y))
-			i++;
         intersect.x += xstep;
         intersect.y += ystep;
     }
@@ -74,7 +70,7 @@ double	get_vert_door_distance(t_game *game, double ray_angle, bool *foundVertHit
 	double	distance;
 
 	*vert_intersect = get_vert_intersect(game, ray_angle, foundVertHit);
-	if (foundVertHit)
+	if (*foundVertHit)
         distance = distanceBetweenPoints(game->map.player.x * game->tile_size, game->map.player.y * game->tile_size, vert_intersect->x * game->tile_size, vert_intersect->y * game->tile_size);
 	if (*foundVertHit)
 		return (distance);

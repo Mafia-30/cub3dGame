@@ -15,7 +15,6 @@ void skip_content_name(char *line, int *i)
 
 void parse_texture(char *line, char **texture)
 {
-    char *path;
     int i;
     int j;
 
@@ -25,46 +24,42 @@ void parse_texture(char *line, char **texture)
     j = i;
     while (line[j] != '\0')
         j++;
-    path = malloc(sizeof(char) * (j - i + 1));
-    if (!path)
+    (*texture) = malloc(sizeof(char) * (j - i + 1));
+    if (!(*texture))
         error_exit("Error\nMalloc failed");
     j = 0;
     while (line[i] != '\0')
-        path[j++] = line[i++];
-    path[j] = '\0';
-    *texture = ft_strtrim(path, " ");
-    if (!(*texture))
-        error_exit("Error\nMalloc failed");
-    free(path);
+        (*texture)[j++] = line[i++];
+    (*texture)[j] = '\0';
 }
 
-void parse_color(char *line, int *color)
+void parse_color(t_game *game, char *line, int *color, char type)
 {
     int i;
-    int r;
-    int g;
-    int b;
+    t_color rgb;
     i = 0;
 
-    if (*color != -1)
+    if ((type == 'f' && game->floor_color_set) || (type == 'c' && game->ciel_color_set))
         error_exit("Error\nColor already defined");
     skip_content_name(line, &i);
-    r = cub_atoi(&line[i], 'f');
+    rgb.r = cub_atoi(&line[i], 'f');
     while (line[i] != ',' && line[i] != '\0')
         i++;
     if (line[i] == '\0')
         error_exit("Error\nInvalid file content");
     i++;
-    g = cub_atoi(&line[i], 's');
+    rgb.g = cub_atoi(&line[i], 's');
     while (line[i] != ',' && line[i] != '\0')
         i++;
     if (line[i] == '\0')
         error_exit("Error\nInvalid file content");
     i++;
-    b = cub_atoi(&line[i], 'l');
-    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-        error_exit("Error\nInvalid color value");
-    *color = (r << 24) + (g << 16) + (b << 8) + 255;
+    rgb.b = cub_atoi(&line[i], 'l');
+    *color = (rgb.r << 24) + (rgb.g << 16) + (rgb.b << 8) + 255;
+    if (type == 'f')
+        game->floor_color_set = true;
+    else
+        game->ciel_color_set = true;
 }
 
 void parse_map(t_game *game, char *line)
@@ -88,9 +83,9 @@ void parse_line(t_game *game, char *line)
     else if (start_with(line, 'E', 'A'))
         parse_texture(line, &game->ea_texture);
     else if (start_with(line, 'F', '\0'))
-        parse_color(line, &game->floor_color);
+        parse_color(game, line, &game->floor_color, 'f');
     else if (start_with(line, 'C', '\0'))
-        parse_color(line, &game->ceiling_color);
+        parse_color(game, line, &game->ceiling_color, 'c');
     else if (line[0] == '\0' && game->map.map_y == 0)
         return;
     else if (line[0] == '\0' && game->map.map_y != 0)
